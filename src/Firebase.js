@@ -1,4 +1,6 @@
-import firebase from 'react-firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
 
 var config = {
     apiKey: "AIzaSyCe1UePFcEPLzU-yUf3dFD2HoptHr5HAIc",
