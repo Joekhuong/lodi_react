@@ -5,6 +5,7 @@ import Login from './components/Login'
 import Register from './components/Register'
 import Home from './components/Home'
 import {AppContext} from './AppContext';
+import firebase from './Firebase'
 
 // The Main component renders one of the three provided
 // Routes (provided that one matches). Both the /roster
@@ -14,7 +15,7 @@ import {AppContext} from './AppContext';
 const Main = () => {
   
   let { state } = React.useContext(AppContext);
-  console.log(state);
+
   return (
     <main>
       <Switch>

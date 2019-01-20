@@ -3,6 +3,12 @@ import { AppContext } from "../AppContext";
 import firebase from "../Firebase";
 
 class LoginDump extends Component {
+  constructor(props) {
+    super(props);
+    this.context_state = props.context_state;
+    this.dispatch = props.dispatch;
+  }
+
   state = {
     email: "",
     password: ""
@@ -19,38 +25,38 @@ class LoginDump extends Component {
     e.preventDefault();
     let self = this;
 
-    if (this.state.region == -1) {
-      alert("Please select region!");
-      return;
-    }
-
     firebase
       .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(function(res) {
         let user = res.user;
-        let user_info = {
-          firstname: self.state.firstname,
-          lastname: self.state.lastname,
-          region: self.state.region
-        };
-        user.user_info = user_info;
-
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(user.uid)
-          .set(user_info)
-          .then(function() {
-            self.dispatch({
-              type: "LOGIN",
-              payload: {
-                user,
-                isAuthenticated: true
-              }
+        if (user) {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(user.uid)
+            .get()
+            .then(function(doc) {
+              let user_info = doc.data();
+              user.user_info = user_info;
+              self.dispatch({
+                type: "LOGIN",
+                payload: {
+                  user,
+                  isAuthenticated: true
+                }
+              });
+              self.props.history.push("/");
             });
-            self.props.history.push("/");
+        } else {
+          self.dispatch({
+            type: "LOGOUT",
+            payload: {
+              user: null,
+              isAuthenticated: false
+            }
           });
+        }
       })
       .catch(function(error) {
         alert(error.message);
@@ -73,31 +79,33 @@ class LoginDump extends Component {
                   <div className="form-label-group">
                     <input
                       type="email"
-                      id="inputEmail"
+                      name="email"
+                      id="email"
                       className="form-control"
                       placeholder="Email address"
                       required
-                      autofocus
+                      autoFocus
                     />
                   </div>
 
                   <div className="form-label-group">
                     <input
                       type="password"
-                      id="inputPassword"
+                      name="password"
+                      id="password"
                       className="form-control"
                       placeholder="Password"
                       required
                     />
                   </div>
-                  <a
-                    href="#!"
+                  <button
+                    type="submit"
                     className="btn btn-lg btn-primary btn-block text-uppercase"
                   >
                     Sign in
-                  </a>
+                  </button>
                   <a
-                    href="#!"
+                    href="/register"
                     className="btn btn-lg btn-dark btn-block text-uppercase"
                   >
                     Register

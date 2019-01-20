@@ -4,15 +4,25 @@ let AppContext = React.createContext();
 
 let initialState = {
   isAuthenticated: false,
-  user: null
+  user: null,
+  isLoading: true,
+  listen_to_auth:true
 };
 
 let reducer = (state, action) => {
   // eslint-disable-next-line default-case
   switch (action.type) {    
     case "LOGIN":
+        console.log('Login',action);
+        var a = { ...state, ...action.payload };
+        console.log(a);
+        localStorage.setItem('authUser', JSON.stringify(action.payload.user));
         return { ...state, ...action.payload };
     case "LOGOUT":
+        console.log('Logout');
+        var a = { ...state, ...action.payload };
+        console.log(a);
+        localStorage.removeItem('authUser');
         return { ...state, ...action.payload };
     case "SET_AUTHENTICATE":
         return { ...state, isAuthenticated: action.payload };

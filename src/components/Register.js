@@ -15,7 +15,7 @@ class RegisterDump extends Component {
     email: "",
     password: "",
     region: -1,
-    regions: []
+    regions: {}
   };
 
   componentWillMount = () => {
@@ -25,13 +25,10 @@ class RegisterDump extends Component {
       .collection("regions")
       .get()
       .then(querySnapshot => {
-        let regions = [];
+        let regions = {};
         querySnapshot.forEach((doc, key) => {
           let data = doc.data();
-          regions.push({
-            id: doc.id,
-            name: data.name
-          });
+          regions = {...regions,[doc.id]:data.name};
         });
         self.setState({ regions });
       });
@@ -54,7 +51,10 @@ class RegisterDump extends Component {
         let user_info = {
           firstname: self.state.firstname,
           lastname: self.state.lastname,
-          region: self.state.region
+          region: {
+              id: self.state.region,
+              name: self.state.regions[self.state.region]
+          }
         };
         user.user_info = user_info;
 
@@ -153,24 +153,31 @@ class RegisterDump extends Component {
                       required
                     >
                       <option value="">--Select Region--</option>
-                      {this.state.regions.map(item => (
-                        <option key={item.id} value={item.id}>
-                          {item.name}
-                        </option>
-                      ))}
+                      {
+                          
+                        // this.state.regions.map(item => (
+                        //     <option key={item.id} value={item.id}>
+                        //     {item.name}
+                        //     </option>
+                        // ))
+                        
+                        Object.keys(this.state.regions).map(key => 
+                            <option key={key} value={key}>{this.state.regions[key]}</option>
+                        )
+                      }
                     </select>
                   </div>
                   <button
                     type="submit"
                     className="btn btn-lg btn-primary btn-block text-uppercase"
                   >
-                    Sign in
+                    Register
                   </button>
                   <a
-                    href="#!"
+                    href="login"
                     className="btn btn-lg btn-dark btn-block text-uppercase"
                   >
-                    Register
+                    SIGN IN
                   </a>
                 </form>
               </div>
