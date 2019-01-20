@@ -54,7 +54,8 @@ class RegisterDump extends Component {
           region: {
               id: self.state.region,
               name: self.state.regions[self.state.region]
-          }
+          },
+          roles: ['user']
         };
         user.user_info = user_info;
 
@@ -91,7 +92,7 @@ class RegisterDump extends Component {
       <div className="container">
         <div className="row">
           <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <div className="card card-signin my-5">
+            <div className="card card-signin my-5 bg-secondary text-white">
               <div className="card-body">
                 <h5 className="card-title text-center">Register</h5>
                 <form
