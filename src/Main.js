@@ -20,6 +20,7 @@ const Main = () => {
     <main>
       <Switch>
         <PrivateRoute isAuthenticated={state.isAuthenticated} exact path='/' component={Home}/>
+        <PrivateRoute isAuthenticated={state.isAuthenticated} exact path='/' component={Home}/>
         <Route path='/login' component={Login}/>
         <Route path='/register' component={Register}/>
       </Switch>

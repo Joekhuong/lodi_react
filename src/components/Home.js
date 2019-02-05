@@ -33,7 +33,7 @@ class HomeDump extends Component {
 
     if (this.state.context_state.user.user_info.roles.includes("admin")) {
       idol_management_btn = (
-        <button type="button" className="btn m-1 text-uppercase">
+        <button type="button" className="btn btn-primary m-1 text-uppercase">
           Idol Management
         </button>
       );
